@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="liu.chi.app.dal.mapper.TPersonMapper">
+  <resultMap id="BaseResultMap" type="liu.chi.app.dal.model.TPerson">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="s_id" jdbcType="INTEGER" property="sId" />
+    <result column="s_name" jdbcType="CHAR" property="sName" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="cid" jdbcType="CHAR" property="cid" />
+    <result column="gender" jdbcType="BIT" property="gender" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="assets" jdbcType="DECIMAL" property="assets" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+  </resultMap>
+</mapper>

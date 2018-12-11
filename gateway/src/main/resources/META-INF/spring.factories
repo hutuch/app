@@ -1,0 +1,3 @@
+org.springframework.context.ApplicationListener=liu.chi.app.gateway.event.spring.EnvironmentPrepared,\
+  liu.chi.app.gateway.event.spring.Failed,liu.chi.app.gateway.event.spring.Prepared,\
+  liu.chi.app.gateway.event.spring.Starting
