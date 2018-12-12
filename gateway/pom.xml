@@ -15,7 +15,7 @@
         <dependency>
             <groupId>liu.chi</groupId>
             <artifactId>grpc-starter</artifactId>
-            <version>3.0-RELEASE</version>
+            <version>1.0-RELEASE</version>
         </dependency>
 
         <dependency>
