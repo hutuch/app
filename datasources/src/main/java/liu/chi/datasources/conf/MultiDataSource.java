@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * AbstractRoutingDataSource的成员Map<Object, Object> targetDataSources中存放读写数据源
+ * AbstractRoutingDataSource的成员
+ * Map<Object, Object> targetDataSources中存放读写数据源,应在初始化时设置
+ * determineCurrentLookupKey的返回值应该是targetDataSources的key
  *
  * @author liuchi
  * @date 2018-09-23 15:02
