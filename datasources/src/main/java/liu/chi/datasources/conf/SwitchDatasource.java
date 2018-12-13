@@ -1,4 +1,4 @@
-package liu.chi.datasources.api;
+package liu.chi.datasources.conf;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,7 +17,7 @@ import org.springframework.core.annotation.Order;
 @Aspect
 @Configuration
 @Order(1)
-public class SwitchDatasourceAop {
+public class SwitchDatasource {
     @Pointcut("execution(* liu.chi.datasources.service..*.*(..))")
     public void switchDataSourceAop() {
     }
@@ -28,14 +28,14 @@ public class SwitchDatasourceAop {
         /**
          * 当前线程为空,表示第一次进入
          */
-        if (DataSourceKey.getRoute() == null) {
+        if (DataSourceConfig.getKey() == null) {
             isSwitch = true;
 
             String name = joinPoint.getSignature().getName();
-            if (name.startsWith(DataSourceKey.READ)) {
-                DataSourceKey.setRoute(DataSourceKey.READ);
+            if (name.startsWith(DataSourceConfig.READ)) {
+                DataSourceConfig.setReadDataSource();
             } else {
-                DataSourceKey.setRoute(DataSourceKey.WRITE);
+                DataSourceConfig.setWriteDataSource();
             }
         }
 
@@ -44,7 +44,7 @@ public class SwitchDatasourceAop {
             return proceed;
         } finally {
             if (isSwitch) {
-                DataSourceKey.clearRoute();
+                DataSourceConfig.removeKey();
             }
         }
     }

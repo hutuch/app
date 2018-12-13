@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author liuchi
  * @date 2018-12-11 17:08
  */
-//todo
+// todo
 @SpringBootApplication
 public class RedisApplication {
     public static void main(String[] args) {

@@ -2,12 +2,16 @@ package liu.chi.httpclient.apache;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.*;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.*;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -19,6 +23,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.IdleConnectionEvictor;
@@ -70,12 +75,19 @@ import java.util.concurrent.TimeUnit;
 public class HttpClientUtil {
     //请求连接 线程安全
     private static CloseableHttpClient httpclient;
+    private static HttpClientContext httpClientContext = null;
 
     static {
         HttpClientConnectionManager connectionManager = getConnectionManager();
         httpclient = HttpClients.custom().setConnectionManager(connectionManager)
                 .setRetryHandler(getRetryHandler())
                 .build();
+
+        //创建HttpClientContext
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("", ""));
+        httpClientContext = HttpClientContext.create();
+        httpClientContext.setCredentialsProvider(credsProvider);
 
         //清理无效链接
         new IdleConnectionEvictor(connectionManager, 1, TimeUnit.MINUTES).start();
@@ -197,7 +209,11 @@ public class HttpClientUtil {
         httpGet.setConfig(getRequestConfig());
 
         try {
-            CloseableHttpResponse response = httpclient.execute(httpGet);
+            //需要登录
+            CloseableHttpResponse response = httpclient.execute(httpGet,httpClientContext);
+            //不需要登录
+            CloseableHttpResponse response2 = httpclient.execute(httpGet);
+
             //未收到响应
             if (response == null) {
                 httpGet.abort();
@@ -286,7 +302,10 @@ public class HttpClientUtil {
         httpPost.setEntity(reqEntity);
 
         try {
-            CloseableHttpResponse response = httpclient.execute(httpPost);
+            //需要登录
+            CloseableHttpResponse response = httpclient.execute(httpPost,httpClientContext);
+            //不需要登录
+            CloseableHttpResponse response2 = httpclient.execute(httpPost,httpClientContext);
             try {
                 System.out.println("http响应码:" + response.getStatusLine().getStatusCode());
                 System.out.println("响应体:" + EntityUtils.toString(response.getEntity()));
