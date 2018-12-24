@@ -16,27 +16,36 @@ public class TransactionController {
     /**
      * 事务生效
      */
-    @RequestMapping("/transaction")
-    public String transaction() throws InterruptedException {
-        service.insert();
-        return "完成";
+    @RequestMapping("/t")
+    public String transaction() {
+        try {
+            service.insert();
+        } catch (Exception e) {
+        }
+        return "事务回滚";
     }
 
     /**
-     *事务不生效(不回滚)
+     * 事务不生效(不回滚)
      */
-    @RequestMapping("/transaction2")
-    public String transaction2() throws InterruptedException {
-        service.insert2();
-        return "完成";
+    @RequestMapping("/t2")
+    public String transaction2() {
+        try {
+            service.insert2();
+        } catch (Exception e) {
+        }
+        return "事务不生效(不回滚)";
     }
 
     /**
      * 事务生效
      */
-    @RequestMapping("/transaction3")
-    public String transaction3() throws InterruptedException {
-        service.insert3();
-        return "完成";
+    @RequestMapping("/t3")
+    public String transaction3() {
+        try {
+            service.insert3();
+        } catch (Exception e) {
+        }
+        return "事务生效";
     }
 }

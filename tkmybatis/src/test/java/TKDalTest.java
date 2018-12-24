@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
+import liu.chi.tkmybatis.TkMybatisApplication;
 import liu.chi.tkmybatis.dal.mapper.TPersonMapper;
 import liu.chi.tkmybatis.dal.model.TPerson;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @date 2018-09-22 09:46
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = TkMybatisApplication.class)
 public class TKDalTest {
 
     @Autowired

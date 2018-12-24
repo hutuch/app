@@ -20,6 +20,7 @@ public class TransactionService {
     private TPersonMapper mapper;
 
     /**
+     * 事务生效
      * 在同一个类中调用自己已经通过spring托管的类中的方法
      */
     public String insert3() throws InterruptedException {
@@ -28,10 +29,16 @@ public class TransactionService {
         return service.insert();
     }
 
+    /**
+     * 事务不生效
+     */
     public String insert2() throws InterruptedException {
         return insert();
     }
 
+    /**
+     * 事务生效
+     */
     @Transactional
     public String insert() throws InterruptedException {
         for (int i = 1; i <= 5; i++) {
