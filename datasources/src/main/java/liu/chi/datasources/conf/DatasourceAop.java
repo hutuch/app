@@ -6,28 +6,25 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * https://www.colabug.com/4440704.html
- *
- * 去除默认的事务配置(exclude = DataSourceAutoConfiguration.class)
- * order 应该先@EnableTransactionManagement(order = 5)
- *
- *
  * @author liuchi
  * @date 2018-09-23 15:39
  */
 @Aspect
 @Configuration
 @Order(1)
-public class SwitchDatasource {
-    @Pointcut("execution(* liu.chi.datasources.service..*.*(..))")
+//指定配置事务的顺序,目的是先执行数据库的选择
+@EnableTransactionManagement(order = 5)
+public class DatasourceAop {
+
+    @Pointcut("execution(* liu.chi.datasources.read..*.*(..))")
     public void switchDataSourceAop() {
     }
 
-    @Around("switchDataSourceAop()")
-    @Around("@annotation(readOnly)")
-    public Object switchDataSource(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("switchDataSourceAop()||@annotation(readOnly)")
+    public Object switchDataSource(ProceedingJoinPoint joinPoint, ReadOnly readOnly) throws Throwable {
         boolean isSwitch = false;
         /**
          * 当前线程为空,表示第一次进入

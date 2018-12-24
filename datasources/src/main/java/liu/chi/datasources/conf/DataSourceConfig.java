@@ -26,6 +26,56 @@ public class DataSourceConfig {
     public static final String READ = "READ";
     public static final String WRITE = "WRITE";
 
+    /**
+     * 配置数据源,该数据源可以根据key 查找响应的数据源
+     */
+    @Bean
+    public DataSource routingDataSource() {
+        Map<Object, Object> map = new HashMap<>();
+
+        DataSource read = DataSourceBuilder.create()
+                .driverClassName("com.mysql.jdbc.Driver")
+                .username("root").password("123456").url("localhost:3306/test").build();
+        map.put(READ, read);
+
+        DataSource write = DataSourceBuilder.create()
+                .driverClassName("com.mysql.jdbc.Driver")
+                .username("root").password("123456").url("localhost:3306/test").build();
+
+        map.put(WRITE, write);
+        RoutingDataSource dataSource = new RoutingDataSource();
+        dataSource.setTargetDataSources(map);
+        dataSource.setDefaultTargetDataSource(write);
+
+        return dataSource;
+    }
+
+    /**
+     * 设置事务，事务需要知道当前使用的是哪个数据源才能进行事务处理
+     */
+    @Bean
+    public DataSourceTransactionManager dataSourceTransactionManager() {
+        return new DataSourceTransactionManager(routingDataSource());
+    }
+
+    /**
+     * 多数据源需要自己设置sqlSessionFactory
+     */
+    @Bean
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+
+        bean.setDataSource(routingDataSource());
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        // 实体类对应的位置
+        bean.setTypeAliasesPackage("");
+        // mybatis的XML的配置
+        bean.setMapperLocations(resolver.getResources(""));
+
+        bean.setConfigLocation(resolver.getResource(""));
+        return bean.getObject();
+    }
+
 
     public static String getKey() {
         return key.get();
@@ -41,55 +91,6 @@ public class DataSourceConfig {
 
     public static void removeKey() {
         key.remove();
-    }
-
-    /**
-     * 配置数据源,该数据源可以根据key 查找响应的数据源
-     */
-    @Bean
-    public DataSource multiDatasource() {
-        Map<Object, Object> map = new HashMap<>();
-
-        DataSource read = DataSourceBuilder.create()
-                .driverClassName("com.mysql.jdbc.Driver")
-                .username("root").password("123456").url("localhost:3306/test").build();
-        map.put(READ, read);
-
-        DataSource write = DataSourceBuilder.create()
-                .driverClassName("com.mysql.jdbc.Driver")
-                .username("root").password("123456").url("localhost:3306/test").build();
-
-        map.put(WRITE, write);
-        MyDataSource dataSource = new MyDataSource();
-        dataSource.setTargetDataSources(map);
-        dataSource.setDefaultTargetDataSource(write);
-
-        return dataSource;
-    }
-
-    /**
-     * 设置事务，事务需要知道当前使用的是哪个数据源才能进行事务处理
-     */
-    @Bean
-    public DataSourceTransactionManager dataSourceTransactionManager() {
-        return new DataSourceTransactionManager(multiDatasource());
-    }
-
-
-    /**
-     * 多数据源需要自己设置sqlSessionFactory
-     */
-    @Bean
-    public SqlSessionFactory sqlSessionFactory() throws Exception {
-        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-        bean.setDataSource(routingDataSource());
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        // 实体类对应的位置
-        bean.setTypeAliasesPackage("");
-        // mybatis的XML的配置
-        bean.setMapperLocations(resolver.getResources(""));
-        bean.setConfigLocation(resolver.getResource(""));
-        return bean.getObject();
     }
 
 }

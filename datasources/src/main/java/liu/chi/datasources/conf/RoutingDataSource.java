@@ -10,7 +10,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  * @author liuchi
  * @date 2018-09-23 15:02
  */
-public class MyDataSource extends AbstractRoutingDataSource {
+public class RoutingDataSource extends AbstractRoutingDataSource {
     @Override
     protected String determineCurrentLookupKey() {
         //根据该key去map中查找

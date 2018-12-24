@@ -1,6 +1,5 @@
 package liu.chi.datasources.service;
 
-import liu.chi.datasources.conf.ReadOnly;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +14,6 @@ public class StuService {
         System.out.println("read");
     }
 
-    @ReadOnly
     public void get() {
 
     }
