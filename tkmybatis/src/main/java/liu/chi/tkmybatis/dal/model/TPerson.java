@@ -64,9 +64,4 @@ public class TPerson {
     @Column(name = "`create_time`")
     private LocalDateTime createTime;
 
-    /**
-     * 修改时间
-     */
-    @Column(name = "`modify_time`")
-    private LocalDateTime modifyTime;
 }
