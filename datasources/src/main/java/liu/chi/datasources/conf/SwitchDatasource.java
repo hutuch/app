@@ -8,8 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
 /**
- * order 应该先@EnableTransactionManagement(order = 5)
+ * https://www.colabug.com/4440704.html
+ *
  * 去除默认的事务配置(exclude = DataSourceAutoConfiguration.class)
+ * order 应该先@EnableTransactionManagement(order = 5)
+ *
  *
  * @author liuchi
  * @date 2018-09-23 15:39
@@ -23,6 +26,7 @@ public class SwitchDatasource {
     }
 
     @Around("switchDataSourceAop()")
+    @Around("@annotation(readOnly)")
     public Object switchDataSource(ProceedingJoinPoint joinPoint) throws Throwable {
         boolean isSwitch = false;
         /**

@@ -85,7 +85,7 @@ public class HttpClientUtil {
 
         //创建HttpClientContext
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("", ""));
+        credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("user", "12345"));
         httpClientContext = HttpClientContext.create();
         httpClientContext.setCredentialsProvider(credsProvider);
 
@@ -318,5 +318,9 @@ public class HttpClientUtil {
             httpPost.releaseConnection();
         }
 
+    }
+
+    public static void main(String[] args) {
+        get("http://127.0.0.1:8080/getchi");
     }
 }

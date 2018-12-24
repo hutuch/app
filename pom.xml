@@ -18,6 +18,7 @@
         <module>redis</module>
         <module>tkmybatis</module>
         <module>datasources</module>
+        <module>security</module>
     </modules>
 
 
@@ -70,20 +71,20 @@
     </dependencyManagement>
 
 
-    <!--<repositories>-->
-        <!--&lt;!&ndash;设置下载的私服&ndash;&gt;-->
-        <!--<repository>-->
-            <!--<id>Nexus</id>-->
-            <!--<name>node-1&#45;&#45;Nexus</name>-->
-            <!--<url>http://node-1:8081/nexus/content/groups/public/</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+        <!--设置下载的私服-->
+        <repository>
+            <id>Nexus</id>
+            <name>node-1--Nexus</name>
+            <url>http://node-1:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

@@ -1,6 +1,8 @@
 package liu.chi.datasources.service;
 
+import liu.chi.datasources.conf.ReadOnly;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author liuchi
@@ -13,7 +15,13 @@ public class StuService {
         System.out.println("read");
     }
 
-    public void write() {
-        System.out.println("write");
+    @ReadOnly
+    public void get() {
+
+    }
+
+    @Transactional
+    public void insert() {
+
     }
 }

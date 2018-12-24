@@ -2,10 +2,6 @@ package liu.chi.datasources.conf;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
-import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * AbstractRoutingDataSource的成员
  * Map<Object, Object> targetDataSources中存放读写数据源,应在初始化时设置
@@ -14,19 +10,10 @@ import java.util.Map;
  * @author liuchi
  * @date 2018-09-23 15:02
  */
-public class MultiDataSource extends AbstractRoutingDataSource {
-
-    public MultiDataSource(Map<String, DataSource> targetDataSources, DataSource defaultTargetDataSource) {
-        Map<Object, Object> map = new HashMap<>();
-        map.putAll(targetDataSources);
-
-
-        setTargetDataSources(map);
-        setDefaultTargetDataSource(defaultTargetDataSource);
-    }
-
+public class MyDataSource extends AbstractRoutingDataSource {
     @Override
     protected String determineCurrentLookupKey() {
+        //根据该key去map中查找
         return DataSourceConfig.getKey();
     }
 }
