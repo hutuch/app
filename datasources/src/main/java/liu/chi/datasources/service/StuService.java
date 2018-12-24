@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class StuService {
 
     public void read() {
-        System.out.println("read");
     }
 
     public void get() {

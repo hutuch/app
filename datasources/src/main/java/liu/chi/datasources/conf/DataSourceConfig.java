@@ -2,7 +2,7 @@ package liu.chi.datasources.conf;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -23,8 +23,8 @@ import java.util.Map;
 public class DataSourceConfig {
     private static final ThreadLocal<String> key = new ThreadLocal<>();
 
-    public static final String READ = "READ";
-    public static final String WRITE = "WRITE";
+    public static final String READ = "read";
+    public static final String WRITE = "write";
 
     /**
      * 配置数据源,该数据源可以根据key 查找响应的数据源
@@ -35,12 +35,12 @@ public class DataSourceConfig {
 
         DataSource read = DataSourceBuilder.create()
                 .driverClassName("com.mysql.jdbc.Driver")
-                .username("root").password("123456").url("localhost:3306/test").build();
+                .username("read").password("123456").url("localhost:3306/app").build();
         map.put(READ, read);
 
         DataSource write = DataSourceBuilder.create()
                 .driverClassName("com.mysql.jdbc.Driver")
-                .username("root").password("123456").url("localhost:3306/test").build();
+                .username("none").password("123456").url("localhost:3306/app").build();
 
         map.put(WRITE, write);
         RoutingDataSource dataSource = new RoutingDataSource();
@@ -68,11 +68,11 @@ public class DataSourceConfig {
         bean.setDataSource(routingDataSource());
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         // 实体类对应的位置
-        bean.setTypeAliasesPackage("");
+        bean.setTypeAliasesPackage("liu.chi.datasources.dal.mapper");
         // mybatis的XML的配置
-        bean.setMapperLocations(resolver.getResources(""));
+        bean.setMapperLocations(resolver.getResources("classpath:mapper/*.xml"));
 
-        bean.setConfigLocation(resolver.getResource(""));
+//        bean.setConfigLocation(resolver.getResource(""));
         return bean.getObject();
     }
 
