@@ -10,6 +10,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.*;
 import java.time.LocalDateTime;
 
@@ -27,6 +29,8 @@ import static org.springframework.format.annotation.NumberFormat.Style.NUMBER;
  * @date 2018-09-12 11:14
  */
 @RestController
+//必须增加该注解,使校验生效
+@Validated
 public class AppRestController {
 
     @Autowired
@@ -39,7 +43,7 @@ public class AppRestController {
      */
     @RequestMapping(value = "/getstu/{nname}/{agee}/{gender}")
     public Stu getStu(@Valid @NotNull @NumberFormat(style = NUMBER) @PathVariable("agee") Integer age,
-                      @NotNull @PathVariable("nname") String name,
+                      @Pattern(regexp = "[A-Z]{2,10}", message = "姓名不正确") @PathVariable("nname") String name,
                       @PathVariable("gender") Gender gender) {
         System.out.println("进入getStu()");
         Stu stu = new Stu();
