@@ -19,6 +19,7 @@
         <module>tkmybatis</module>
         <module>datasources</module>
         <module>security</module>
+        <module>zjava</module>
     </modules>
 
 
